@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>ChatBot</title>
+    <style>
+        * {
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font: 19px Helvetica, Arial;
+            padding-left: 20%;
+            padding-right: 20%;
+        }
+
+        #f {
+            background: #000;
+            position: fixed;
+            bottom: 1%;
+            left: 20%;
+            right: 20%;
+            border: 1px solid black;
+        }
+
+        #f input {
+            border: 2px solid black;
+            width: 80%;
+            font-size: 120%;
+        }
+
+        #f button {
+            background: rgb(130, 224, 255);
+            border: 2px solid black;
+            margin-right: 0;
+            width: 20%;
+            font-size: 120%;
+        }
+
+        #messages {
+            list-style-type: none;
+            padding: 0;
+            padding-bottom: 3%;
+        }
+
+        #messages li {
+            padding: 5px 10px;
+        }
+
+        #messages li:nth-child(odd) {
+            background: #eee;
+            text-align: right;
+        }
+
+        a:link {
+            color: red;
+        }
+
+        /* visited link */
+        a:visited {
+            color: green;
+        }
+
+        /* mouse over link */
+        a:hover {
+            color: hotpink;
+        }
+
+        /* selected link */
+        a:active {
+            color: blue;
+        }
+
+        h4 {
+            margin: 1rem;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/main.css" rel="stylesheet" type="text/css" />
+
+</head>
+<% var socket_id = id %>
+<% var name = name %>
+<% var email = email %>
+<% var userchat = chat.split("\\n") %> 
+<% var occupation = occupation %>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<body>
+    <h4>Name: <%= name %></h4>
+    <h4>Email: <%= email %> </h4>
+    <h4>Occupation: <%= occupation %></h4>
+    <ul id="messages">
+        <% for (var i = 0; i < (userchat.length - 1); i++) { %>
+            <li><%= userchat[i] %> </li>
+        <% } %>
+    </ul>
+</body>
+
+</html>

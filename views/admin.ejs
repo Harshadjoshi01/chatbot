@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/main.css" rel="stylesheet" type="text/css" />
+    <title>Document</title>
+    <style>
+        a:link {
+            text-decoration: none;
+            color: #fff;
+        }
+        a:hover {
+            color: black;
+        }
+        a:visited{
+            text-decoration: none;
+            color:#fff;
+        }
+    </style>
+</head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<body> 
+    <h1 style="text-align: center; margin-top: 3rem;">ADMIN PANNEL</h1>
+    <div style="margin: 5rem;">
+        <h1 style="text-align: center; margin: 2rem;">Requested Users</h1>
+        <table class="table table-striped table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Sr.Num</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Start Chat</th>
+                </tr>
+            </thead>
+            <tbody id = "required">
+            </tbody>
+        </table>
+        <h1 style="text-align: center; margin: 2rem;">Online Users</h1>
+        <table class="table table-striped table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Sr.Num</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Start Chat</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% var count = 1 %>
+                <% for (const key in allchats) { %>
+                <tr>
+                    <th scope="row"><%= count++ %> </th>
+                    <td><%= allchats[key].name %></td>
+                    <td><a href="/admin/<%= key %> ">Click Here</a></td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+        <h1 style="text-align: center; margin: 2rem;">Offline Users</h1>
+        <table class="table table-striped table-dark">
+            <tr>
+                <th scope="col">Sr.Num</th>
+                <th scope="col">Name</th>
+                <th scope="col">See Chat</th>
+            </tr>
+            <% for (let i = 0; i < chats.length; i++) { %>
+            <tr>
+                <th scope="row"><%= i+1 %> </th>
+                <td><%= chats[i].userName%></td>
+                <td><a href="/admin/seechat/<%=chats[i].chatId%>">Click Here</a></td>
+            </tr>
+            <% } %>
+        </table>
+    </div>
+    <script>
+        var socket = io.connect('http://localhost:3000');
+        socket.emit('adminconnect');
+        socket.on('adminconnect', function(data) {
+            console.log(data.id);
+        });
+        socket.on('letstalktoadmin', (data) => {
+            var tr = document.createElement('tr');
+            var td1 = document.createElement('td');
+            var td2 = document.createElement('td');
+            var td3 = document.createElement('td');
+            td1.innerHTML = data.id;
+            td2.innerHTML = data.name;
+            td3.innerHTML = '<a href="/admin/' + data.id + '">Click Here</a>';
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+            document.getElementById('required').appendChild(tr);
+        })
+    </script>
+</body>
+
+</html>
